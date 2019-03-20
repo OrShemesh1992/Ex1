@@ -17,11 +17,12 @@ private:
 public:
   Tree();
   ~Tree();
+void del(node *leaf);
 Tree(node * tree);
 void insert(int key);
 node* insert(int x, node* p);
-void remove();
-void remove(node *leaf);
+node* remove(node* root, int key);
+void remove(int x);
 int size();
 int size(node* node);
 int root();
@@ -32,6 +33,6 @@ int left(int key);
 int right(int key);
 void print();
 void print(node *leaf,int x);
-bool contain(int key) ;
+bool contains(int key);
 };
 }

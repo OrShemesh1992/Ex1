@@ -15,7 +15,16 @@ Tree::Tree(node * tree)
 }
 Tree::~Tree()
 {
-        remove();
+        Tree::del(treeroot);
+}
+void Tree::del(node *leaf)
+{
+        if(leaf!=NULL)
+        {
+                Tree::del(leaf->left);
+                Tree::del(leaf->right);
+                delete leaf;
+        }
 }
 //foun insert
 void Tree::insert(int x){
@@ -45,19 +54,44 @@ node* Tree::insert(int x, node* p){
 }
 // foun remove
 
-void Tree::remove()
+void Tree::remove(int x)
 {
-        remove(treeroot);
+  if((contains(x) == false) || (treeroot==NULL)){
+  throw::invalid_argument("Is Not GOOD");
+}else{
+ Tree::remove(treeroot,x);
 }
-
-void Tree::remove(node *leaf)
+}
+node* Tree::remove(node* root,int data)
 {
-        if(leaf!=NULL)
+    if(root==NULL) return root;
+    else if(data<=root->key_value)
+        root->left = remove(root->left, data);
+    else if (data> root->key_value)
+        root->right = remove(root->right, data);
+    else
+    {
+        //No child
+        if(root->right == NULL && root->left == NULL)
         {
-                remove(leaf->left);
-                remove(leaf->right);
-                delete leaf;
+            delete root;
+            root = NULL;
         }
+        //One child
+        else if(root->right == NULL)
+        {
+            node* temp = root;
+            root= root->left;
+            delete temp;
+        }
+        else if(root->left == NULL)
+        {
+            node* temp = root;
+            root= root->right;
+            delete temp;
+        }
+    }
+    return root;
 }
 
 // foun size
@@ -82,12 +116,22 @@ int Tree::root()
 // foun parent
 int Tree::parent(int key)
 {
-  return search(key)->parent->key_value;
+  node* temp =search(key);
+if (temp==NULL) {
+  throw::invalid_argument("No Parent found");
+  return -1;
+}
+else return temp->parent->key_value;
 };
 // foun left
 int Tree::left(int key)
 {
-  return search(key)->left->key_value;
+  node* temp =search(key);
+if (temp==NULL) {
+  throw::invalid_argument("No left found");
+  return -1;
+}
+else return temp->left->key_value;
 };
 // foun right
 int Tree::right(int key)
@@ -133,7 +177,11 @@ void Tree::print(node* p, int indent) {
  }
 }
 }
-// bool contain(int key) {
-//   node * temp =search(key);
-//   if (temp==NULL) {returnz/* code */
-//   }
+ bool Tree::contains(int key) {
+   node * temp =search(key);
+   if (temp==NULL) {
+     return false;
+   }else{
+     return true;
+   }
+ }
