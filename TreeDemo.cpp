@@ -2,6 +2,7 @@
  * Demo program for the exercise on binary trees
  *
  * @author Erel Segal-Halevi
+ *
  * @since 2019-02
  */
 
@@ -21,18 +22,20 @@ int main() {
       // 3 is the root's left child;
       // 7 is the root's right child.
     ariel::Tree threetree;
-    threetree.insert(5).insert(7).insert(3);
+    threetree.insert(5);
+    threetree.insert(7);
+    threetree.insert(3);
     cout << "threetree: size=" << threetree.size() << " root=" << threetree.root() << endl << "   ";  // size=3, root=5.
     threetree.print();
     cout << endl;
 
-    cout << threetree.size()      // should print 3
-         << threetree.parent(3)   // should print 5
-         << threetree.parent(7)   // should print 5
-         << threetree.left(5)     // should print 3
-         << threetree.right(5)    // should print 7
-         //<< threetree.insert(5)    // should throw an exception: "5 already exists"
+    cout << threetree.size()<<"\n"      // should print 3
+         << threetree.parent(3)<<"\n"   // should print 5
+         << threetree.parent(7)<<"\n"   // should print 5
+         << threetree.left(5)<<"\n"     // should print 3
+         << threetree.right(5)<<"\n"    // should print 7
          << endl;
+    threetree.insert(5);    // should throw an exception, since 5 already exists.
   } catch (...) {
     cout << "Caught exception!" << endl;
   }

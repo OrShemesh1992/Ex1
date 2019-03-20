@@ -1,6 +1,7 @@
 #include "Tree.hpp"
 #include <iostream>
 #include <string.h>
+#include <iomanip>
 using namespace std;
 using namespace ariel;
 
@@ -17,47 +18,30 @@ Tree::~Tree()
         remove();
 }
 //foun insert
-Tree Tree::insert(int key)
-{
+void Tree::insert(int x){
+		treeroot = Tree::insert(x,treeroot);
+	}
+node* Tree::insert(int x, node* p){
 
-        if(treeroot!=NULL)
-        {
-                insert(key, treeroot);
-        }else{
-                treeroot=new node;
-                treeroot->key_value=key;
-                treeroot->left=NULL;
-                treeroot->right=NULL;
-        }
-        return treeroot;
+	if(p == NULL){
+		p = new node;
+    p->parent=p;
+		p->key_value = x;
+		p->left = p->right = NULL;
+	}
+	else if (p->key_value == x){
+	throw invalid_argument("This numer is allready in the Tree");
+
+	}
+	else if(x < p->key_value){
+    p->parent=p;
+		p->left = Tree::insert(x, p->left);
+	}
+	if(x > p->key_value){
+    p->parent=p;
+		p->right = Tree::insert(x, p->right);
 }
-
-void Tree::insert(int key, node *leaf)
-{
-        if(key< leaf->key_value)
-        {
-                if(leaf->left!=NULL)
-                        insert(key, leaf->left);
-                else
-                {
-                        leaf->left=new node;
-                        leaf->left->key_value=key;
-                        leaf->left->left=NULL; //Sets the left child of the child node to null
-                        leaf->left->right=NULL; //Sets the right child of the child node to null
-                }
-        }
-        else if(key>=leaf->key_value)
-        {
-                if(leaf->right!=NULL)
-                        insert(key, leaf->right);
-                else
-                {
-                        leaf->right=new node;
-                        leaf->right->key_value=key;
-                        leaf->right->left=NULL; //Sets the left child of the child node to null
-                        leaf->right->right=NULL; //Sets the right child of the child node to null
-                }
-        }
+		return p;
 }
 // foun remove
 
@@ -98,7 +82,7 @@ int Tree::root()
 // foun parent
 int Tree::parent(int key)
 {
-  return searchfather(key,treeroot)->key_value;
+  return search(key)->parent->key_value;
 };
 // foun left
 int Tree::left(int key)
@@ -110,46 +94,46 @@ int Tree::right(int key)
 {
   return search(key)->right->key_value;
 };
-// foun help search
-node * Tree::search(int Key)
+node * Tree::search(int Key){
+  return search(treeroot,Key);
+}
+node* Tree::search(node* root, int key)
 {
-    int   ValueInTree = false;
-    node *temp;
+    // Base Cases: root is null or key is present at root
+    if (root == NULL || root->key_value == key)
+    root->parent=root;
+       return root;
 
-    temp = treeroot;
-    while((temp != NULL) && (temp->key_value != Key))
-    {
-        if(Key < temp->key_value)
-            temp = temp->left;  // Search key comes before this node.
-        else
-            temp = temp->right; // Search key comes after this node
-    }
-    if(temp == NULL) return temp;    // Search key not found
-    else
-        return(temp);    // Found it so return a duplicate
-};
-// foun help parent
-node * Tree::searchfather(int key, node *leaf)
-{
-        if(leaf!=NULL)
-        {
-                if((key==leaf->left->key_value)||(key==leaf->right->key_value))
-                        return leaf;
-                if(key<leaf->key_value)
-                        return searchfather(key, leaf->left);
-                else
-                        return searchfather(key, leaf->right);
-        }
-        else return NULL;
+    // Key is greater than root's key
+    if (root->key_value < key)
+    root->parent=root;
+       return search(root->right, key);
+
+    // Key is smaller than root's key
+    root->parent=root;
+    return search(root->left, key);
 }
-//foun print
 void Tree::print(){
-		print(treeroot);
+		print(treeroot,10);
 }
-void Tree::print(node *leaf){
-	if(leaf != NULL){
-		print(leaf->left);
-		cout << leaf->key_value << ",";
-		print(leaf->right);
-	}
+void Tree::print(node* p, int indent) {
+
+ if (p != NULL) {
+ if (p->right) {
+   Tree::print(p->right, indent + 4);
+ }
+ if (indent) {
+   cout << setw(indent) << ' ';
+ }
+ if (p->right) cout << " /\n" << setw(indent) << ' ';
+ cout << p->key_value << "\n ";
+ if (p->left) {
+   cout << setw(indent) << ' ' << " \\\n";
+   Tree::print(p->left, indent + 4);
+ }
 }
+}
+// bool contain(int key) {
+//   node * temp =search(key);
+//   if (temp==NULL) {returnz/* code */
+//   }
