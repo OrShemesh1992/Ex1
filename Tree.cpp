@@ -34,7 +34,7 @@ node* Tree::insert(int x, node* p){
 
 	if(p == NULL){
 		p = new node;
-    p->parent=p;
+                p->parent=p;
 		p->key_value = x;
 		p->left = p->right = NULL;
 	}
@@ -52,6 +52,16 @@ node* Tree::insert(int x, node* p){
 }
 		return p;
 }
+node* minValueNode(node* node) 
+{ 
+    struct node* current = node; 
+  
+    /* loop down to find the leftmost leaf */
+    while (current->left != NULL) 
+        current = current->left; 
+  
+    return current; 
+} 
 // foun remove
 
 void Tree::remove(int x)
@@ -62,37 +72,52 @@ void Tree::remove(int x)
  Tree::remove(treeroot,x);
 }
 }
-node* Tree::remove(node* root,int data)
-{
-    if(root==NULL) return root;
-    else if(data<=root->key_value)
-        root->left = remove(root->left, data);
-    else if (data> root->key_value)
-        root->right = remove(root->right, data);
+node* Tree::remove(node* root,int key)
+{ 
+    // base case 
+    if (root == NULL) return root; 
+  
+    // If the key to be deleted is smaller than the root's key, 
+    // then it lies in left subtree 
+    if (key < root->key_value) 
+        root->left = Tree::remove(root->left, key); 
+  
+    // If the key to be deleted is greater than the root's key, 
+    // then it lies in right subtree 
+    else if (key > root->key_value) 
+        root->right = Tree::remove(root->right, key); 
+  
+    // if key is same as root's key, then This is the node 
+    // to be deleted 
     else
-    {
-        //No child
-        if(root->right == NULL && root->left == NULL)
-        {
-            delete root;
-            root = NULL;
-        }
-        //One child
-        else if(root->right == NULL)
-        {
-            node* temp = root;
-            root= root->left;
-            delete temp;
-        }
-        else if(root->left == NULL)
-        {
-            node* temp = root;
-            root= root->right;
-            delete temp;
-        }
-    }
-    return root;
-}
+    { 
+        // node with only one child or no child 
+        if (root->left == NULL) 
+        { 
+            node *temp = root->right; 
+            delete(root); 
+            return temp; 
+        } 
+        else if (root->right == NULL) 
+        { 
+            node *temp = root->left; 
+            delete(root); 
+            return temp; 
+        } 
+  
+        // node with two children: Get the inorder successor (smallest 
+        // in the right subtree) 
+        node* temp = minValueNode(root->right); 
+  
+        // Copy the inorder successor's content to this node 
+        root->key_value = temp->key_value; 
+  
+        // Delete the inorder successor 
+        root->right = Tree::remove(root->right, temp->key_value); 
+    } 
+    return root; 
+} 
+
 
 // foun size
 
@@ -118,7 +143,7 @@ int Tree::parent(int key)
 {
   node* temp =search(key);
 if (temp==NULL) {
-  throw::invalid_argument("No Parent found");
+ throw::invalid_argument("No Parent found");
   return -1;
 }
 else return temp->parent->key_value;
@@ -128,7 +153,7 @@ int Tree::left(int key)
 {
   node* temp =search(key);
 if (temp==NULL) {
-  throw::invalid_argument("No left found");
+throw::invalid_argument("No left found");
   return -1;
 }
 else return temp->left->key_value;
@@ -166,12 +191,6 @@ void Tree::print(node* p, int indent) {
  if (p->right) {
    Tree::print(p->right, indent + 4);
  }
-
-
-
-
-
- 
  if (indent) {
    cout << setw(indent) << ' ';
  }
@@ -186,8 +205,9 @@ void Tree::print(node* p, int indent) {
  bool Tree::contains(int key) {
    node * temp =search(key);
    if (temp==NULL) {
+  //throw::invalid_argument("not found");
      return false;
    }else{
      return true;
    }
- }
+}
