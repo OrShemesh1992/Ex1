@@ -166,6 +166,12 @@ void Tree::print(node* p, int indent) {
  if (p->right) {
    Tree::print(p->right, indent + 4);
  }
+
+
+
+
+
+ 
  if (indent) {
    cout << setw(indent) << ' ';
  }
