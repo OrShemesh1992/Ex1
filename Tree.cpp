@@ -182,6 +182,8 @@ node* Tree::search(node* root, int key)
     root->parent=root;
     return search(root->left, key);
 }
+
+
 void Tree::print(){
 		print(treeroot,10);
 }
