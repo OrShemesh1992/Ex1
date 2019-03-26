@@ -42,7 +42,7 @@ ourtree1.insert(arr[i]);
   .CHECK_THROWS(emptytree.remove(5))
   .CHECK_EQUAL (emptytree.size() ,0)
 
-  //.CHECK_EQUAL (threetree.size(), 3)
+  .CHECK_EQUAL (threetree.size(), 3)
   .CHECK_EQUAL (threetree.root(), 5)
   .CHECK_EQUAL (threetree.parent(3), 5)
   .CHECK_EQUAL (threetree.parent(7), 5)
@@ -58,10 +58,9 @@ ourtree1.insert(arr[i]);
    }
    tc.CHECK_EQUAL (ourtree.size() ,5);
 
-   .CHECK_EQUAL (ourtree.root(), random[0])
-   .CHECK_EQUAL (ourtree1.parent(3), 4)
+   tc.CHECK_EQUAL (ourtree1.parent(3), 4)
    .CHECK_EQUAL (ourtree1.left(3), 2)
-     .CHECK_EQUAL (threetree1.right(3), NULL)
+     .CHECK_EQUAL (ourtree1.right(3), NULL);
 
 
 
