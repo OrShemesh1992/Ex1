@@ -4,7 +4,6 @@
 #include <iomanip>
 using namespace std;
 using namespace ariel;
-
 Tree::Tree()
 {
         treeroot=NULL;
@@ -52,7 +51,7 @@ node* Tree::insert(int x, node* p){
 }
 		return p;
 }
-node* minValueNode(node* node) 
+struct node * minValueNode(struct node* node) 
 { 
     struct node* current = node; 
   
@@ -63,7 +62,6 @@ node* minValueNode(node* node)
     return current; 
 } 
 // foun remove
-
 void Tree::remove(int x)
 {
   if((contains(x) == false) || (treeroot==NULL)){
@@ -73,50 +71,54 @@ void Tree::remove(int x)
 }
 }
 node* Tree::remove(node* root,int key)
-{ 
-    // base case 
-    if (root == NULL) return root; 
-  
-    // If the key to be deleted is smaller than the root's key, 
-    // then it lies in left subtree 
-    if (key < root->key_value) 
-        root->left = Tree::remove(root->left, key); 
-  
-    // If the key to be deleted is greater than the root's key, 
-    // then it lies in right subtree 
-    else if (key > root->key_value) 
-        root->right = Tree::remove(root->right, key); 
-  
-    // if key is same as root's key, then This is the node 
-    // to be deleted 
+{
+    // base case
+    if (root == NULL) return root;
+
+    // If the key to be deleted is smaller than the root's key,
+    // then it lies in left subtree
+    if (key < root->key_value & root->left!=NULL)
+        root->left = Tree::remove(root->left, key);
+
+    // If the key to be deleted is greater than the root's key,
+    // then it lies in right subtree
+    else if (key > root->key_value  & root->right!=NULL)
+        root->right = Tree::remove(root->right, key);
+
+    // if key is same as root's key, then This is the node
+    // to be deleted
     else
-    { 
-        // node with only one child or no child 
-        if (root->left == NULL) 
-        { 
-            node *temp = root->right; 
-            delete(root); 
-            return temp; 
-        } 
-        else if (root->right == NULL) 
-        { 
-            node *temp = root->left; 
-            delete(root); 
-            return temp; 
-        } 
-  
-        // node with two children: Get the inorder successor (smallest 
-        // in the right subtree) 
-        node* temp = minValueNode(root->right); 
-  
-        // Copy the inorder successor's content to this node 
-        root->key_value = temp->key_value; 
-  
-        // Delete the inorder successor 
-        root->right = Tree::remove(root->right, temp->key_value); 
-    } 
-    return root; 
-} 
+    {
+      if(root->right == NULL&root->left == NULL){
+        delete(root);
+        return NULL;
+      }
+        // node with only one child or no child
+        if (root->left == NULL&root->right != NULL)
+        {
+            node *temp = root->right;
+            delete(root);
+            return temp;
+        }
+        else if (root->right == NULL&root->left != NULL)
+        {
+            node *temp = root->left;
+            delete(root);
+            return temp;
+        }
+
+        // node with two children: Get the inorder successor (smallest
+        // in the right subtree)
+        node* temp = minValueNode(root->right);
+
+        // Copy the inorder successor's content to this node
+        root->key_value = temp->key_value;
+
+        // Delete the inorder successor
+        root->right = Tree::remove(root->right, temp->key_value);
+    }
+    return root;
+}
 
 
 // foun size
@@ -125,6 +127,7 @@ int Tree::size()
 {
   return size(treeroot);
 }
+
 int Tree::size(node* node)
 {
     if (node == NULL)
@@ -168,19 +171,14 @@ node * Tree::search(int Key){
 }
 node* Tree::search(node* root, int key)
 {
-    // Base Cases: root is null or key is present at root
-    if (root == NULL || root->key_value == key)
-    root->parent=root;
-       return root;
-
-    // Key is greater than root's key
-    if (root->key_value < key)
-    root->parent=root;
-       return search(root->right, key);
-
-    // Key is smaller than root's key
-    root->parent=root;
-    return search(root->left, key);
+  if(root == NULL)
+		return NULL;
+	else if(key < root->key_value)
+		return search(root->left, key);
+	else if(key > root->key_value)
+		return search(root->right, key);
+	else
+		return root;
 }
 
 
@@ -207,7 +205,7 @@ void Tree::print(node* p, int indent) {
  bool Tree::contains(int key) {
    node * temp =search(key);
    if (temp==NULL) {
-  //throw::invalid_argument("not found");
+  throw::invalid_argument("not found");
      return false;
    }else{
      return true;
