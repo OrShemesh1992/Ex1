@@ -14,6 +14,7 @@ int main() {
   ariel::Tree emptytree;
   ariel::Tree threetree;
   ariel::Tree ourtree;
+  ariel::Tree ourtree1;
   ariel::Tree mytree;
 
   threetree.insert(5);
@@ -21,10 +22,14 @@ int main() {
   threetree.insert(3);
 
 int random[5] = {rand()%100,rand()%100,rand()%100,rand()%100,rand()%100};
+int arr[5] = {7,4,3,2,5};
+for(int i =0;i<5;i++){
+ourtree1.insert(arr[i]);
+}
    for(int i =0;i<5;i++){
    ourtree.insert(random[i]);
    }
- 
+
 
   badkan::TestCase tc("Binary tree");
   tc
@@ -32,9 +37,9 @@ int random[5] = {rand()%100,rand()%100,rand()%100,rand()%100,rand()%100};
   .CHECK_OK    (emptytree.insert(5))
   .CHECK_EQUAL (emptytree.size(), 1)
   .CHECK_EQUAL (emptytree.contains(5), true)
- //.CHECK_OK    (emptytree.remove(5))
+ .CHECK_OK    (emptytree.remove(5))
   .CHECK_EQUAL (emptytree.contains(5), false)
-  //.CHECK_THROWS(emptytree.remove(5))
+  .CHECK_THROWS(emptytree.remove(5))
   .CHECK_EQUAL (emptytree.size() ,0)
 
   //.CHECK_EQUAL (threetree.size(), 3)
@@ -47,16 +52,24 @@ int random[5] = {rand()%100,rand()%100,rand()%100,rand()%100,rand()%100};
   .CHECK_THROWS(threetree.left(6))
   .CHECK_OK    (threetree.print())
   .print();
-   
+
     for(int i =0;i<5;i++){
    tc.CHECK_EQUAL (ourtree.contains(random[i]),true);
    }
-   tc.CHECK_EQUAL (emptytree.size() ,5);
+   tc.CHECK_EQUAL (ourtree.size() ,5);
+
+   .CHECK_EQUAL (ourtree.root(), random[0])
+   .CHECK_EQUAL (ourtree1.parent(3), 4)
+   .CHECK_EQUAL (ourtree1.left(3), 2)
+     .CHECK_EQUAL (threetree1.right(3), NULL)
+
+
+
     for(int i =0;i<5;i++){
-    tc.CHECK_THROWS(emptytree.remove(random[i]));
-    tc.CHECK_EQUAL (emptytree.size(), 5-i);
+    tc.CHECK_THROWS(ourtree.remove(random[i]));
+    tc.CHECK_EQUAL (ourtree.size(), 5-i);
    }
-   
+
 
 
 
