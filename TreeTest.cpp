@@ -11,78 +11,78 @@ using std::cout, std::endl;
 #include "Tree.hpp"
 #include <cstdlib>
 int main() {
-  ariel::Tree emptytree;
-  ariel::Tree threetree;
-  ariel::Tree randomali;
-  ariel::Tree ourtree;
-  ariel::Tree treeright;
-  ariel::Tree bigtree;
+        ariel::Tree emptytree;
+        ariel::Tree threetree;
+        ariel::Tree randomali;
+        ariel::Tree ourtree;
+        ariel::Tree treeright;
+        ariel::Tree bigtree;
 //insert threetree
-  threetree.insert(5);
-  threetree.insert(7);
-  threetree.insert(3);
+        threetree.insert(5);
+        threetree.insert(7);
+        threetree.insert(3);
 //insert ourtre
-int random[5] = {rand()%100,rand()%100,rand()%100,rand()%100,rand()%100};
-   for(int i =0;i<5;i++){
-   randomali.insert(random[i]);
-   }
+        int random[5] = {rand()%100,rand()%100,rand()%100,rand()%100,rand()%100};
+        for(int i =0; i<5; i++) {
+                randomali.insert(random[i]);
+        }
 //insert ourtre1
-int arr[5] = {7,4,3,2,5};
-for(int i =0;i<5;i++){
-ourtree.insert(arr[i]);
-}
+        int arr[5] = {7,4,3,2,5};
+        for(int i =0; i<5; i++) {
+                ourtree.insert(arr[i]);
+        }
 //insert treeright
-treeright.insert(8);
-treeright.insert(9);
-treeright.insert(10);
-treeright.insert(11);
-treeright.insert(12);
+        treeright.insert(8);
+        treeright.insert(9);
+        treeright.insert(10);
+        treeright.insert(11);
+        treeright.insert(12);
 
 // insert bigtree
 
-bigtree.insert(5);
-bigtree.insert(3);
-bigtree.insert(8);
-bigtree.insert(4);
-bigtree.insert(10);
-bigtree.insert(7);
-bigtree.insert(6);
-bigtree.insert(2);
-bigtree.insert(1);
-bigtree.insert(9);
-bigtree.insert(12);
+        bigtree.insert(5);
+        bigtree.insert(3);
+        bigtree.insert(8);
+        bigtree.insert(4);
+        bigtree.insert(10);
+        bigtree.insert(7);
+        bigtree.insert(6);
+        bigtree.insert(2);
+        bigtree.insert(1);
+        bigtree.insert(9);
+        bigtree.insert(12);
 
 //testing
 
 //emptytree
-  badkan::TestCase tc("Binary tree");
-  tc
-  .CHECK_EQUAL (emptytree.size(), 0)
-  .CHECK_OK    (emptytree.insert(5))
-  .CHECK_EQUAL (emptytree.size(), 1)
-  .CHECK_EQUAL (emptytree.contains(5), true)
-  .CHECK_OK (emptytree.remove(5))
-  .CHECK_EQUAL (emptytree.contains(5), false)
-  //.CHECK_THROWS(emptytree.remove(5))
-  .CHECK_EQUAL (emptytree.size() ,0)
+        badkan::TestCase tc("Binary tree");
+        tc
+        .CHECK_EQUAL (emptytree.size(), 0)
+        .CHECK_OK    (emptytree.insert(5))
+        .CHECK_EQUAL (emptytree.size(), 1)
+        .CHECK_EQUAL (emptytree.contains(5), true)
+        .CHECK_OK (emptytree.remove(5))
+        .CHECK_EQUAL (emptytree.contains(5), false)
+        .CHECK_THROWS(emptytree.remove(5))
+        .CHECK_EQUAL (emptytree.size(),0)
 //threetree
-  .CHECK_EQUAL (threetree.size(), 3)
-  .CHECK_EQUAL (threetree.root(), 5)
-  .CHECK_EQUAL (threetree.parent(3), 5)
-  .CHECK_EQUAL (threetree.parent(7), 5)
-  .CHECK_EQUAL (threetree.left(5), 3)
-  .CHECK_EQUAL (threetree.right(5), 7)
-  .CHECK_THROWS(threetree.insert(3))
-  .CHECK_THROWS(threetree.left(6))
-  .CHECK_OK    (threetree.print())
-  .print();
+        .CHECK_EQUAL (threetree.size(), 3)
+        .CHECK_EQUAL (threetree.root(), 5)
+        .CHECK_EQUAL (threetree.parent(3), 5)
+        .CHECK_EQUAL (threetree.parent(7), 5)
+        .CHECK_EQUAL (threetree.left(5), 3)
+        .CHECK_EQUAL (threetree.right(5), 7)
+        .CHECK_THROWS(threetree.insert(3))
+        .CHECK_THROWS(threetree.left(6))
+        .CHECK_OK    (threetree.print())
+        .print();
 //randomali
     for(int i =0;i<5;i++){
    tc.CHECK_EQUAL (randomali.contains(random[i]),true);
    }
    tc.CHECK_EQUAL (randomali.size() ,5)
    .CHECK_EQUAL (randomali.parent(random[0]), NULL).print();
-   
+
     for(int i =0;i<5;i++){
     tc.CHECK_THROWS(randomali.remove(random[i]));
     tc.CHECK_EQUAL (randomali.size(), 5-i);
@@ -159,5 +159,5 @@ for(int i =1;i<11;i++){
     tc.CHECK_EQUAL (bigtree.size(), 0);
 
 
-  cout << "You have " << tc.right() << " right answers and " << tc.wrong() << " wrong answers so your grade is " << tc.grade() << ". Great!" << endl;
+        cout << "You have " << tc.right() << " right answers and " << tc.wrong() << " wrong answers so your grade is " << tc.grade() << ". Great!" << endl;
 }

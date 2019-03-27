@@ -1,38 +1,37 @@
-
 #include "iostream"
 using namespace std;
 namespace ariel {
 struct node
 {
-        int key_value;
+        int x;
         node *left;
         node *right;
-        node *parent;
 };
-
 class Tree
 {
 private:
-  node * treeroot;
+node * treeroot;
 public:
-  Tree();
-  ~Tree();
-void del(node *leaf);
-Tree(node * tree);
-void insert(int key);
-node* insert(int x, node* p);
-node* remove(node* root, int key);
-void remove(int x);
-int size();
-int size(node* node);
-int root();
-int parent(int key);
-node* search(node* root, int key);
-node * search(int Key);
-int left(int key);
-int right(int key);
+Tree();
+~Tree();
+void del(node *root);
+void insert(int x);
 void print();
-void print(node *leaf,int x);
-bool contains(int key);
+bool contains(int x);
+int size();
+int root();
+int left(int x);
+int right(int x);
+int parent(int x);
+void remove(int x);
+private:
+node* insert(int x, node* root);
+node* newNode(int x);
+node* minimumElement(node* root);
+node* remove(node* root, int x);
+int size(node* node);
+int findParent(node* root,int x);
+node * search(node* root, int x);
+void print(node *root,int x);
 };
 }

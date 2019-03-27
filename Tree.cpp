@@ -4,210 +4,206 @@
 #include <iomanip>
 using namespace std;
 using namespace ariel;
+
 Tree::Tree()
 {
         treeroot=NULL;
-}
-Tree::Tree(node * tree)
-{
-        treeroot=tree;
 }
 Tree::~Tree()
 {
         Tree::del(treeroot);
 }
-void Tree::del(node *leaf)
+//foun delete
+void Tree::del(node * root)
 {
-        if(leaf!=NULL)
+        if(root!=NULL)
         {
-                Tree::del(leaf->left);
-                Tree::del(leaf->right);
-                delete leaf;
+                Tree::del(root->left);
+                Tree::del(root->right);
+                delete root;
         }
+}
+node* Tree::newNode(int x)
+{
+        node* root = new node();
+        root->x = x;
+        root->left = root->right = NULL;
+        return root;
 }
 //foun insert
 void Tree::insert(int x){
-		treeroot = Tree::insert(x,treeroot);
-	}
-node* Tree::insert(int x, node* p){
-
-	if(p == NULL){
-		p = new node;
-                p->parent=p;
-		p->key_value = x;
-		p->left = p->right = NULL;
-	}
-	else if (p->key_value == x){
-	throw invalid_argument("This numer is allready in the Tree");
-
-	}
-	else if(x < p->key_value){
-    p->parent=p;
-		p->left = Tree::insert(x, p->left);
-	}
-	if(x > p->key_value){
-    p->parent=p;
-		p->right = Tree::insert(x, p->right);
+        bool cheack=Tree::contains(x);
+        if(cheack==true) {
+                __throw_invalid_argument("The data in the try!!");
+        }else if(cheack==false) {
+                treeroot = Tree::insert(x,treeroot);
+        }
 }
-		return p;
+//foun help insert
+node* Tree::insert(int x, node* root){
+
+        if(root == NULL)
+                root = newNode(x);
+        else if(x <= root->x)
+                root->left = insert(x,root->left);
+        else if(x > root->x)
+                root->right = insert(x,root->right);
+        return root;
 }
-struct node * minValueNode(struct node* node) 
-{ 
-    struct node* current = node; 
-  
-    /* loop down to find the leftmost leaf */
-    while (current->left != NULL) 
-        current = current->left; 
-  
-    return current; 
-} 
 // foun remove
 void Tree::remove(int x)
 {
-  if((contains(x) == false) || (treeroot==NULL)){
-  throw::invalid_argument("Is Not GOOD");
-}else{
- Tree::remove(treeroot,x);
-}
-}
-node* Tree::remove(node* root,int key)
-{
-    // base case
-    if (root == NULL) return root;
-
-    // If the key to be deleted is smaller than the root's key,
-    // then it lies in left subtree
-    if (key < root->key_value & root->left!=NULL)
-        root->left = Tree::remove(root->left, key);
-
-    // If the key to be deleted is greater than the root's key,
-    // then it lies in right subtree
-    else if (key > root->key_value  & root->right!=NULL)
-        root->right = Tree::remove(root->right, key);
-
-    // if key is same as root's key, then This is the node
-    // to be deleted
-    else
-    {
-      if(root->right == NULL&root->left == NULL){
-        delete(root);
-        return NULL;
-      }
-        // node with only one child or no child
-        if (root->left == NULL&root->right != NULL)
-        {
-            node *temp = root->right;
-            delete(root);
-            return temp;
+        if((contains(x) == false)) {
+                __throw_invalid_argument("The data is on the tree!!");
+        }else{
+                Tree::remove(treeroot,x);
         }
-        else if (root->right == NULL&root->left != NULL)
-        {
-            node *temp = root->left;
-            delete(root);
-            return temp;
-        }
-
-        // node with two children: Get the inorder successor (smallest
-        // in the right subtree)
-        node* temp = minValueNode(root->right);
-
-        // Copy the inorder successor's content to this node
-        root->key_value = temp->key_value;
-
-        // Delete the inorder successor
-        root->right = Tree::remove(root->right, temp->key_value);
-    }
-    return root;
 }
-
-
+//foun help remove
+node* Tree::remove(node* root, int x){
+        if (root->x > x) {
+                root->left = remove(root->left, x);
+        } else if (root->x < x) {
+                root->right = remove(root->right, x);
+        } else {
+                // if nodeToBeDeleted have both children
+                if (root->left != NULL && root->right != NULL) {
+                        node* temp = root;
+                        // Finding minimum element from right
+                        node * minNodeForRight = minimumElement(temp->right);
+                        // Replacing current node with minimum node from right subtree
+                        root->x = minNodeForRight->x;
+                        // Deleting minimum node from right now
+                        root->right = remove(root->right, minNodeForRight->x);
+                }
+                // if nodeToBeDeleted has only left child
+                else if (root->left != NULL) {
+                        root = root->left;
+                }
+                // if nodeToBeDeleted has only right child
+                else if (root->right != NULL) {
+                        root = root->right;
+                }
+                // if nodeToBeDeleted do not have child (Leaf node)
+                else{
+                        treeroot = NULL;
+                }
+        }
+        return root;
+}
+//foun help remove
+node* Tree::minimumElement(node* root) {
+        if (root->left == NULL) {
+                return root;
+        } else {
+                return minimumElement(root->left);
+        }
+}
 // foun size
-
 int Tree::size()
 {
-  return size(treeroot);
+        return size(treeroot);
 }
-
-int Tree::size(node* node)
+// foun help size
+int Tree::size(node* root)
 {
-    if (node == NULL)
-        return 0;
-    else
-        return(size(node->left) + 1 + size(node->right));
+        if (root == NULL)
+                return 0;
+        else
+                return(size(root->left) + 1 + size(root->right));
 }
-
 // foun root
 int Tree::root()
 {
-  return treeroot->key_value;
+        if(treeroot==NULL) {
+                __throw_invalid_argument("The data is on the tree!!");
+        }else{
+                return treeroot->x;
+        }
 };
 // foun parent
-int Tree::parent(int key)
+int Tree::parent(int x)
 {
-  node* temp =search(key);
-if (temp==NULL) {
- throw::invalid_argument("No Parent found");
-  return -1;
+
+        node * cheack=Tree::search(treeroot,x);
+        if(cheack==NULL) {
+                __throw_invalid_argument("The data is on the tree!!");
+        }else {
+                return findParent(treeroot,x);
+        }
 }
-else return temp->parent->key_value;
-};
+// foun help parent
+int Tree::findParent(node* root,int x) {
+        if (x < root->x) {
+                if (root->left->x == x) {
+                        return root->x;
+                }
+                else {
+                        return Tree::findParent(root->left,x);
+                }
+        }else if (root->right->x ==x) {
+                return root->x;
+        }else {
+                return Tree::findParent(root->right,x);
+        }
+}
 // foun left
-int Tree::left(int key)
+int Tree::left(int x)
 {
-  node* temp =search(key);
-if (temp==NULL) {
-throw::invalid_argument("No left found");
-  return -1;
+        node * cheack=Tree::search(treeroot,x);
+        if(cheack==NULL) {
+                __throw_invalid_argument("The data is on the tree!!");
+        }else {
+                return cheack->left->x;
+        }
 }
-else return temp->left->key_value;
-};
 // foun right
-int Tree::right(int key)
+int Tree::right(int x)
 {
-  return search(key)->right->key_value;
-};
-node * Tree::search(int Key){
-  return search(treeroot,Key);
+        node * cheack=Tree::search(treeroot,x);
+        if(cheack==NULL) {
+                __throw_invalid_argument("The data is on the tree!!");
+        }else {
+                return cheack->right->x;
+        }
 }
-node* Tree::search(node* root, int key)
+//foun search
+node * Tree::search(node* root, int x)
 {
-  if(root == NULL)
-		return NULL;
-	else if(key < root->key_value)
-		return search(root->left, key);
-	else if(key > root->key_value)
-		return search(root->right, key);
-	else
-		return root;
+        if(root == NULL)
+                return NULL;
+        else if(x < root->x)
+                return search(root->left, x);
+        else if(x > root->x)
+                return search(root->right, x);
+        else
+                return root;
 }
-
-
+//foun print
 void Tree::print(){
-		print(treeroot,10);
+        print(treeroot,10);
 }
+//foun help print
 void Tree::print(node* p, int indent) {
 
- if (p != NULL) {
- if (p->right) {
-   Tree::print(p->right, indent + 4);
- }
- if (indent) {
-   cout << setw(indent) << ' ';
- }
- if (p->right) cout << " /\n" << setw(indent) << ' ';
- cout << p->key_value << "\n ";
- if (p->left) {
-   cout << setw(indent) << ' ' << " \\\n";
-   Tree::print(p->left, indent + 4);
- }
+        if (p != NULL) {
+                if (p->right) {
+                        Tree::print(p->right, indent + 4);
+                }
+                if (indent) {
+                        cout << setw(indent) << ' ';
+                }
+                if (p->right) cout << " /\n" << setw(indent) << ' ';
+                cout << p->x << "\n ";
+                if (p->left) {
+                        cout << setw(indent) << ' ' << " \\\n";
+                        Tree::print(p->left, indent + 4);
+                }
+        }
 }
-}
- bool Tree::contains(int key) {
-   node * temp =search(key);
-   if (temp==NULL) {
-  throw::invalid_argument("not found");
-     return false;
-   }else{
-     return true;
-   }
+//foun contains
+bool Tree::contains(int x) {
+        node * temp = search(treeroot,x);
+        if(temp==NULL) return false;
+        else return true;
 }
