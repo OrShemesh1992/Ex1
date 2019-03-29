@@ -60,7 +60,10 @@ void Tree::remove(int x)
         }
 }
 //foun help remove
-node* Tree::remove(node* root, int x){
+node* Tree::remove(node* root, int x){ \
+        if(Tree::size()==1) {
+                treeroot=NULL;
+        }
         if (root->x > x) {
                 root->left = remove(root->left, x);
         } else if (root->x < x) {
@@ -68,6 +71,7 @@ node* Tree::remove(node* root, int x){
         } else {
                 // if nodeToBeDeleted have both children
                 if (root->left != NULL && root->right != NULL) {
+
                         node* temp = root;
                         // Finding minimum element from right
                         node * minNodeForRight = minimumElement(temp->right);
@@ -75,6 +79,7 @@ node* Tree::remove(node* root, int x){
                         root->x = minNodeForRight->x;
                         // Deleting minimum node from right now
                         root->right = remove(root->right, minNodeForRight->x);
+
                 }
                 // if nodeToBeDeleted has only left child
                 else if (root->left != NULL) {
@@ -86,7 +91,8 @@ node* Tree::remove(node* root, int x){
                 }
                 // if nodeToBeDeleted do not have child (Leaf node)
                 else{
-                        treeroot = NULL;
+                  delete root;
+                        root = NULL;
                 }
         }
         return root;
@@ -151,7 +157,7 @@ int Tree::findParent(node* root,int x) {
 int Tree::left(int x)
 {
         node * cheack=Tree::search(treeroot,x);
-        if(cheack==NULL) {
+        if(cheack==NULL||cheack->left==NULL) {
                 __throw_invalid_argument("The data is on the tree!!");
         }else {
                 return cheack->left->x;
@@ -161,7 +167,7 @@ int Tree::left(int x)
 int Tree::right(int x)
 {
         node * cheack=Tree::search(treeroot,x);
-        if(cheack==NULL) {
+        if(cheack==NULL||cheack->right==NULL) {
                 __throw_invalid_argument("The data is on the tree!!");
         }else {
                 return cheack->right->x;
