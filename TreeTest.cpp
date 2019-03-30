@@ -119,7 +119,7 @@ int main() {
         .CHECK_EQUAL (treeright.parent(10), 11)
         .CHECK_EQUAL (treeright.left(11), 10)
         .CHECK_EQUAL (treeright.right(11), 12)
-        .CHECK_THROWS(treeright.remove(0));
+       .CHECK_THROWS(treeright.remove(0));
         int k=5;
         for(int i =8; i<13; i++) {
                 tc.CHECK_EQUAL (treeright.size(), k);
@@ -163,10 +163,10 @@ int main() {
                         j2--;
                         tc.CHECK_OK(bigtree.remove(i));
                 }else{
-                        tc.CHECK_THROWS(bigtree.remove(i));
+                       tc.CHECK_THROWS(bigtree.remove(i));
                 }
         }
-        tc.CHECK_THROWS(bigtree.remove(12));
+      tc.CHECK_OK(bigtree.remove(12));
         tc.CHECK_EQUAL (bigtree.size(), 0);
         cout << "You have " << tc.right() << " right answers and " << tc.wrong() << " wrong answers so your grade is " << tc.grade() << ". Great!" << endl;
 }
