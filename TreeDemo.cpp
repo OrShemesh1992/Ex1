@@ -35,7 +35,7 @@ int main() {
          << threetree.left(5)<<"\n"     // should print 3
          << threetree.right(5)<<"\n"    // should print 7
          << endl;
-           threetree.remove(5);
+          threetree.remove(5);
            threetree.print();
     threetree.insert(5);    // should throw an exception, since 5 already exists.
   } catch (...) {

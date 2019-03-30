@@ -24,6 +24,7 @@ void Tree::del(node * root)
                 delete root;
         }
 }
+//foun new Node
 node* Tree::newNode(int x)
 {
         node* root = new node();
@@ -58,7 +59,7 @@ void Tree::remove(int x)
 
         if (removeNode == NULL)
         {
-                throw std::invalid_argument("the number isn't exist ");
+                throw std::invalid_argument("The data is not in the tree!!");
         }
 
         node *temp = remove(treeroot,x);
@@ -72,10 +73,9 @@ void Tree::remove(int x)
                 treeroot = NULL;
         }
 }
-
-
 //foun help remove
 node * Tree::remove(node* root, int x){
+  node *temp;
         if(root==NULL) {
                 return root;
         }
@@ -86,22 +86,23 @@ node * Tree::remove(node* root, int x){
         } else {
                 if (root->left == NULL)
                 {
-                        node *temp = root->right;
+                        temp = root->right;
                         delete root;
                         return temp;
                 }
                 else if (root->right== NULL)
                 {
-                        node *temp = root->left;
+                        temp = root->left;
                         delete root;
                         return temp;
                 }
-                node *temp = minimumElement(root->right);
+                temp = minimumElement(root->right);
                 root->x=(temp->x);
                 root->right=remove(root->right, temp->x);
         }
         return root;
 }
+//foun help remove
 node * Tree::minimumElement(node *root)
 {
         if(root == NULL)
@@ -136,10 +137,9 @@ int Tree::root()
 // foun parent
 int Tree::parent(int x)
 {
-
         node * cheack=Tree::search(treeroot,x);
         if(cheack==NULL||treeroot->x==x) {
-                __throw_invalid_argument("The data is not in the tree!! or dats is the root");
+                __throw_invalid_argument("The data is not in the tree or the data is the root");
         }else {
                 return findParent(treeroot,x);
         }
