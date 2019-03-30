@@ -13,6 +13,7 @@ Tree::~Tree()
 {
         Tree::del(treeroot);
 }
+
 //foun delete
 void Tree::del(node * root)
 {
@@ -53,57 +54,62 @@ node* Tree::insert(int x, node* root){
 // foun remove
 void Tree::remove(int x)
 {
-        if((contains(x) == false)) {
-                __throw_invalid_argument("The data is on the tree!!");
-        }else{
-                Tree::remove(treeroot,x);
+        node *removeNode = search(treeroot, x);
+
+        if (removeNode == NULL)
+        {
+                throw std::invalid_argument("the number isn't exist ");
+        }
+
+        node *temp = remove(treeroot,x);
+
+        if (removeNode == treeroot)
+        {
+                treeroot = temp;
+        }
+        if (temp == NULL)
+        {
+                treeroot = NULL;
         }
 }
+
+
 //foun help remove
-node* Tree::remove(node* root, int x){ \
-        if(Tree::size()==1) {
-                treeroot=NULL;
+node * Tree::remove(node* root, int x){
+        if(root==NULL) {
+                return root;
         }
         if (root->x > x) {
                 root->left = remove(root->left, x);
         } else if (root->x < x) {
                 root->right = remove(root->right, x);
         } else {
-                // if nodeToBeDeleted have both children
-                if (root->left != NULL && root->right != NULL) {
-
-                        node* temp = root;
-                        // Finding minimum element from right
-                        node * minNodeForRight = minimumElement(temp->right);
-                        // Replacing current node with minimum node from right subtree
-                        root->x = minNodeForRight->x;
-                        // Deleting minimum node from right now
-                        root->right = remove(root->right, minNodeForRight->x);
-
+                if (root->left == NULL)
+                {
+                        node *temp = root->right;
+                        delete root;
+                        return temp;
                 }
-                // if nodeToBeDeleted has only left child
-                else if (root->left != NULL) {
-                        root = root->left;
+                else if (root->right== NULL)
+                {
+                        node *temp = root->left;
+                        delete root;
+                        return temp;
                 }
-                // if nodeToBeDeleted has only right child
-                else if (root->right != NULL) {
-                        root = root->right;
-                }
-                // if nodeToBeDeleted do not have child (Leaf node)
-                else{
-                  delete root;
-                        root = NULL;
-                }
+                node *temp = minimumElement(root->right);
+                root->x=(temp->x);
+                root->right=remove(root->right, temp->x);
         }
         return root;
 }
-//foun help remove
-node* Tree::minimumElement(node* root) {
-        if (root->left == NULL) {
+node * Tree::minimumElement(node *root)
+{
+        if(root == NULL)
+                return NULL;
+        else if(root->left == NULL)
                 return root;
-        } else {
+        else
                 return minimumElement(root->left);
-        }
 }
 // foun size
 int Tree::size()

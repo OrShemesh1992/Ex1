@@ -119,20 +119,15 @@ int main() {
         .CHECK_EQUAL (treeright.parent(10), 11)
         .CHECK_EQUAL (treeright.left(11), 10)
         .CHECK_EQUAL (treeright.right(11), 12)
-        .CHECK_THROWS(treeright.remove(0)).print();
-//   treeright.print();
-//    int k=5;
-// for(int i =8;i<13;i++){
-//   cout<<treeright.size()<<"chaeck"<<endl;
-//   tc.CHECK_EQUAL (treeright.size(), k);
-//
-//   tc.CHECK_OK(treeright.remove(i));
-//    treeright.print();
-//   k--;
-//  }
+        .CHECK_THROWS(treeright.remove(0));
+        int k=5;
+        for(int i =8; i<13; i++) {
+                tc.CHECK_EQUAL (treeright.size(), k);
+                tc.CHECK_OK(treeright.remove(i));
+                k--;
+        }
 
         //bigtree
-        bigtree.print();
         tc.CHECK_EQUAL (bigtree.right(5), 8)
         .CHECK_EQUAL (bigtree.right(8), 10)
         .CHECK_EQUAL (bigtree.right(10), 12)
@@ -156,26 +151,22 @@ int main() {
         .CHECK_THROWS(bigtree.right(12))
         .CHECK_THROWS(bigtree.right(2))
         .CHECK_THROWS(bigtree.right(1))
-        .CHECK_EQUAL (bigtree.size(),11)
-        .print();
+        .CHECK_EQUAL (bigtree.size(),11);
         for(int i =1; i<11; i++) {
                 tc.CHECK_EQUAL (bigtree.contains(i),true);
         }
-        // tc.CHECK_EQUAL (bigtree.contains(12),true);
-        // int j2=11;
-        // for(int i =1; i<11; i++) {
-        //         if(bigtree.contains(i)) {
-        //                 tc.CHECK_EQUAL (bigtree.size(), j2);
-        //                 j2--;
-        //                 tc.CHECK_OK(bigtree.remove(i));
-        //                 bigtree.print();
-        //         }else{
-        //                 tc.CHECK_THROWS(bigtree.remove(i));
-        //         }
-        // }
-//  tc.CHECK_THROWS(bigtree.remove(12));
-//     tc.CHECK_EQUAL (bigtree.size(), 0);
-
-
+        tc.CHECK_EQUAL (bigtree.contains(12),true);
+        int j2=11;
+        for(int i =1; i<11; i++) {
+                if(bigtree.contains(i)) {
+                        tc.CHECK_EQUAL (bigtree.size(), j2);
+                        j2--;
+                        tc.CHECK_OK(bigtree.remove(i));
+                }else{
+                        tc.CHECK_THROWS(bigtree.remove(i));
+                }
+        }
+        tc.CHECK_THROWS(bigtree.remove(12));
+        tc.CHECK_EQUAL (bigtree.size(), 0);
         cout << "You have " << tc.right() << " right answers and " << tc.wrong() << " wrong answers so your grade is " << tc.grade() << ". Great!" << endl;
 }
