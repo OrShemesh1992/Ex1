@@ -128,7 +128,7 @@ int Tree::size(node* root)
 int Tree::root()
 {
         if(treeroot==NULL) {
-                __throw_invalid_argument("The data is on the tree!!");
+                __throw_invalid_argument("The data is not in the tree!!");
         }else{
                 return treeroot->x;
         }
@@ -138,8 +138,8 @@ int Tree::parent(int x)
 {
 
         node * cheack=Tree::search(treeroot,x);
-        if(cheack==NULL) {
-                __throw_invalid_argument("The data is on the tree!!");
+        if(cheack==NULL||treeroot->x==x) {
+                __throw_invalid_argument("The data is not in the tree!! or dats is the root");
         }else {
                 return findParent(treeroot,x);
         }
@@ -164,7 +164,7 @@ int Tree::left(int x)
 {
         node * cheack=Tree::search(treeroot,x);
         if(cheack==NULL||cheack->left==NULL) {
-                __throw_invalid_argument("The data is on the tree!!");
+                __throw_invalid_argument("The data is not in the tree!!");
         }else {
                 return cheack->left->x;
         }
@@ -174,7 +174,7 @@ int Tree::right(int x)
 {
         node * cheack=Tree::search(treeroot,x);
         if(cheack==NULL||cheack->right==NULL) {
-                __throw_invalid_argument("The data is on the tree!!");
+                __throw_invalid_argument("The data is not in the tree!!");
         }else {
                 return cheack->right->x;
         }
